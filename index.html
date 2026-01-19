@@ -1,0 +1,1888 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Digital Skills Malawi - Monday History Surveys</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #1a237e 0%, #311b92 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1a237e;
+            margin-bottom: 10px;
+        }
+        
+        .logo span {
+            color: #ff9800;
+        }
+        
+        .tabs {
+            display: flex;
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            flex-wrap: wrap;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            min-width: 100px;
+        }
+        
+        .tab.active {
+            border-bottom: 3px solid #1a237e;
+            font-weight: bold;
+            color: #1a237e;
+        }
+        
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: #1a237e;
+            margin-bottom: 15px;
+        }
+        
+        h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            display: inline-block;
+            text-align: center;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-primary {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .btn-success {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .btn-warning {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .btn-danger {
+            background: #f44336;
+            color: white;
+        }
+        
+        .btn-info {
+            background: #17a2b8;
+            color: white;
+        }
+        
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+        }
+        
+        .btn-small {
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            margin: 8px 0;
+        }
+        
+        .password-container {
+            position: relative;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .survey-question {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .option {
+            background: white;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border: 2px solid #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .option:hover {
+            border-color: #4CAF50;
+            background: #f1f8e9;
+        }
+        
+        .option.selected {
+            border-color: #4CAF50;
+            background: #e8f5e9;
+        }
+        
+        .option.wrong {
+            border-color: #f44336;
+            background: #ffebee;
+        }
+        
+        .option.correct {
+            border-color: #4CAF50;
+            background: #e8f5e9;
+        }
+        
+        .survey-progress {
+            height: 10px;
+            background: #ddd;
+            border-radius: 5px;
+            margin: 15px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: #4CAF50;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            max-width: 300px;
+            z-index: 1000;
+        }
+        
+        .message {
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .day-label {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin: 5px;
+        }
+        
+        .monday { background: #4CAF50; color: white; }
+        .tuesday { background: #2196F3; color: white; }
+        .wednesday { background: #9C27B0; color: white; }
+        .thursday { background: #FF9800; color: white; }
+        .friday { background: #795548; color: white; }
+        .saturday { background: #607D8B; color: white; }
+        .sunday { background: #F44336; color: white; }
+        .anytime { background: #1a237e; color: white; }
+        
+        .whatsapp-help-box {
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        
+        .balances-section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .balance-card {
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        }
+        
+        .account-balance {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+        }
+        
+        .profit-balance {
+            background: linear-gradient(135deg, #ff9800, #f57c00);
+            color: white;
+        }
+        
+        .total-balance-card {
+            background: linear-gradient(135deg, #1a237e, #311b92);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .total-balance-amount {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        
+        .referral-link-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 2px dashed #1a237e;
+            text-align: center;
+        }
+        
+        .referral-link {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            word-break: break-all;
+            font-family: monospace;
+            border: 2px solid #4CAF50;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        
+        .share-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        
+        .task-list {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        
+        .task-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #4CAF50;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .task-day {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .task-reward {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        
+        .task-status {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .completed { background: #4CAF50; color: white; }
+        .pending { background: #ff9800; color: white; }
+        .locked { background: #9e9e9e; color: white; }
+        
+        .activation-promise-box {
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        .payment-confirmation-box {
+            background: #e8f5e9;
+            border: 2px solid #4CAF50;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        .activation-notice {
+            background: #fff3cd;
+            border: 2px solid #ff9800;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .balances-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">Digital Skills <span>Malawi</span></div>
+            <p>📚 Learn • 📜 Monday History Surveys • 💰 Earn MWK 3,000 Per Referral</p>
+            <div class="shortcuts">
+                <button class="btn btn-primary btn-small" onclick="showTab('register')">📝 Register</button>
+                <button class="btn btn-success btn-small" onclick="showTab('login')">🎓 Login</button>
+                <button class="btn btn-info btn-small" onclick="showTab('survey')">📊 Surveys</button>
+            </div>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('home')">🏠 Home</div>
+            <div class="tab" onclick="showTab('register')">📝 Register</div>
+            <div class="tab" onclick="showTab('pay')">💰 Pay</div>
+            <div class="tab" onclick="showTab('login')">🎓 Login</div>
+            <div class="tab" onclick="showTab('dashboard')">📊 Dashboard</div>
+            <div class="tab" onclick="showTab('survey')">📝 Monday Surveys</div>
+            <div class="tab" onclick="showTab('admin')">👑 Admin</div>
+        </div>
+        
+        <!-- HOME TAB -->
+        <div id="home-tab" class="tab-content">
+            <div class="card">
+                <h2>🎯 Welcome to Digital Skills Malawi</h2>
+                <p>Learn digital skills, complete Monday History surveys, and earn money!</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 15px 0;">
+                    <div style="background: #4CAF50; color: white; padding: 15px; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 24px; font-weight: bold;" id="total-students">0</div>
+                        <div>Total Students</div>
+                    </div>
+                    <div style="background: #ff9800; color: white; padding: 15px; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 24px; font-weight: bold;" id="total-earned">MWK 0</div>
+                        <div>Commissions Paid</div>
+                    </div>
+                </div>
+                
+                <!-- WhatsApp Help Box -->
+                <div class="whatsapp-help-box">
+                    <h3>💬 WhatsApp Support</h3>
+                    <p>Need help? Contact us on WhatsApp:</p>
+                    <div style="margin: 15px 0;">
+                        <div style="font-size: 20px; font-weight: bold;">+265 993 915 361</div>
+                        <p style="font-size: 14px; opacity: 0.9;">Available 8:00 AM - 8:00 PM</p>
+                    </div>
+                    <button class="btn" style="background: white; color: #25D366;" onclick="contactWhatsAppSupport()">
+                        💬 Chat on WhatsApp
+                    </button>
+                </div>
+                
+                <div class="payment-box">
+                    <h3>📱 How to Join:</h3>
+                    <p>1. <strong>Register</strong> - Fill the registration form</p>
+                    <p>2. <strong>Pay MWK 8,000</strong> - Via Airtel Money or TNMP</p>
+                    <p>3. <strong>Get Activated</strong> - Admin activates within 2 minutes</p>
+                    <p>4. <strong>Start Earning</strong> - Monday History Surveys & weekly tasks</p>
+                </div>
+                
+                <div class="activation-promise-box">
+                    <h3>⏰ FAST ACTIVATION PROMISE</h3>
+                    <p>Your account will be activated by admin within <strong>2 minutes</strong> after payment confirmation!</p>
+                    <div style="margin: 10px 0; font-size: 24px; font-weight: bold;">
+                        ⏱️ 2-MINUTE ACTIVATION
+                    </div>
+                    <p>No waiting for hours! Admin monitors payments 24/7.</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- REGISTER TAB -->
+        <div id="register-tab" class="tab-content hidden">
+            <div class="card">
+                <h2>📝 Student Registration</h2>
+                
+                <input type="text" id="full-name" placeholder="Full Name" required>
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="email" id="email" placeholder="Email Address" required>
+                <input type="tel" id="phone" placeholder="Phone Number (e.g., 0888888888)" required>
+                
+                <div class="password-container">
+                    <input type="password" id="password" placeholder="Password (min 6 characters)" required>
+                    <span class="password-toggle" onclick="togglePassword('password')">👁️</span>
+                </div>
+                
+                <div class="whatsapp-help-box">
+                    <h3>💬 Need Help?</h3>
+                    <p>Contact WhatsApp support during registration:</p>
+                    <button class="btn btn-whatsapp" onclick="contactWhatsAppSupport()">
+                        💬 WhatsApp: +265 993 915 361
+                    </button>
+                </div>
+                
+                <button class="btn btn-primary" onclick="registerStudent()">
+                    ✅ Register Account
+                </button>
+            </div>
+        </div>
+        
+        <!-- PAY TAB -->
+        <div id="pay-tab" class="tab-content hidden">
+            <div class="card">
+                <h2>💰 Make Payment</h2>
+                
+                <div class="activation-promise-box">
+                    <h3>⏰ FAST ACTIVATION PROMISE</h3>
+                    <p>After payment, send proof to WhatsApp and get activated within <strong>2 minutes!</strong></p>
+                    <p>Admin monitors payments 24/7 for instant activation.</p>
+                </div>
+                
+                <div class="payment-box">
+                    <h3>📱 Payment Amount: MWK 8,000</h3>
+                    <p><strong>Reference:</strong> Use your Student ID</p>
+                    <p><strong>Activation Time:</strong> Within 2 minutes after payment proof</p>
+                </div>
+                
+                <!-- Payment Confirmation Box -->
+                <div class="payment-confirmation-box">
+                    <h3>✅ STEP 1: Make Payment</h3>
+                    <p>1. Pay MWK 8,000 using details below</p>
+                    <p>2. Use your Student ID as reference</p>
+                    <p>3. Take screenshot of payment confirmation</p>
+                </div>
+                
+                <div class="whatsapp-help-box">
+                    <h3>💬 STEP 2: Send Payment Proof</h3>
+                    <p>Send payment screenshot to WhatsApp for instant activation:</p>
+                    <div style="margin: 15px 0;">
+                        <div style="font-size: 18px; font-weight: bold;">+265 993 915 361</div>
+                        <p>Admin activates within 2 minutes of receiving proof</p>
+                    </div>
+                    <button class="btn btn-whatsapp" onclick="sendPaymentProof()">
+                        📱 Send Payment Proof Now
+                    </button>
+                </div>
+                
+                <div class="activation-notice">
+                    <h3>⏰ ACTIVATION PROCESS:</h3>
+                    <p>1. You make payment and send proof</p>
+                    <p>2. Admin receives notification instantly</p>
+                    <p>3. Admin activates your account (takes 1-2 minutes)</p>
+                    <p>4. You receive confirmation on WhatsApp</p>
+                    <p>5. You can login and start earning!</p>
+                </div>
+                
+                <div class="payment-box">
+                    <h3>📱 Payment Methods:</h3>
+                    
+                    <div style="display: flex; gap: 10px; margin: 15px 0;">
+                        <button class="btn" onclick="showPaymentDetails('airtel')" style="background: #FF0000; color: white;">
+                            📱 Airtel Money
+                        </button>
+                        <button class="btn" onclick="showPaymentDetails('tnmp')" style="background: #00A859; color: white;">
+                            📱 TNMP
+                        </button>
+                    </div>
+                    
+                    <div id="airtel-details">
+                        <h3>Airtel Money Instructions:</h3>
+                        <p>1. Dial <strong>*211#</strong></p>
+                        <p>2. Send to: <strong>0993 915 361</strong></p>
+                        <p>3. Amount: <strong>MWK 8,000</strong></p>
+                        <p>4. Reference: <strong id="airtel-ref">YOUR-STUDENT-ID</strong></p>
+                        <div style="margin-top: 15px;">
+                            <button class="btn btn-small" style="background: #FF0000; color: white;" onclick="copyToClipboard('0993915361')">
+                                📋 Copy Airtel Number
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="tnmp-details" class="hidden">
+                        <h3>TNMP Instructions:</h3>
+                        <p>1. Dial <strong>*444#</strong></p>
+                        <p>2. Pay Merchant: <strong>0882 884 178</strong></p>
+                        <p>3. Amount: <strong>MWK 8,000</strong></p>
+                        <p>4. Reference: <strong id="tnmp-ref">YOUR-STUDENT-ID</strong></p>
+                        <div style="margin-top: 15px;">
+                            <button class="btn btn-small" style="background: #00A859; color: white;" onclick="copyToClipboard('0882884178')">
+                                📋 Copy TNMP Number
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- LOGIN TAB -->
+        <div id="login-tab" class="tab-content hidden">
+            <div class="card">
+                <h2>🎓 Student Login</h2>
+                <input type="text" id="login-username" placeholder="Username or Student ID">
+                
+                <div class="password-container">
+                    <input type="password" id="login-password" placeholder="Password">
+                    <span class="password-toggle" onclick="togglePassword('login-password')">👁️</span>
+                </div>
+                
+                <button class="btn btn-primary" onclick="loginStudent()">
+                    🔐 Login
+                </button>
+                
+                <div class="whatsapp-help-box" style="margin-top: 20px;">
+                    <h3>💬 Waiting for Activation?</h3>
+                    <p>If you made payment but account not activated yet:</p>
+                    <button class="btn btn-whatsapp" onclick="contactWhatsAppSupport()">
+                        💬 Check Activation Status
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- DASHBOARD TAB -->
+        <div id="dashboard-tab" class="tab-content hidden">
+            <div id="dashboard-content">
+                <!-- Dashboard content will be loaded here -->
+            </div>
+        </div>
+        
+        <!-- SURVEY TAB -->
+        <div id="survey-tab" class="tab-content hidden">
+            <div id="survey-content">
+                <!-- Survey content will be loaded here -->
+            </div>
+        </div>
+        
+        <!-- ADMIN TAB -->
+        <div id="admin-tab" class="tab-content hidden">
+            <div class="card">
+                <h2>👑 Admin Login</h2>
+                <div class="password-container">
+                    <input type="password" id="admin-pass" placeholder="Admin Password">
+                    <span class="password-toggle" onclick="togglePassword('admin-pass')">👁️</span>
+                </div>
+                <button class="btn btn-primary" onclick="adminLogin()">
+                    Login
+                </button>
+                
+                <div class="whatsapp-help-box" style="margin-top: 20px;">
+                    <h3>📱 Admin WhatsApp</h3>
+                    <p>Official WhatsApp for payments & activation:</p>
+                    <div style="font-size: 18px; font-weight: bold; margin: 10px 0;">
+                        +265 993 915 361
+                    </div>
+                </div>
+            </div>
+            
+            <div id="admin-dashboard" class="hidden">
+                <!-- Admin dashboard will be loaded here -->
+            </div>
+        </div>
+        
+        <div id="notification-area" class="notification"></div>
+    </div>
+
+    <script>
+        // ==================== GLOBAL VARIABLES ====================
+        let currentUser = null;
+        let isAdmin = false;
+        let currentSurvey = null;
+        let currentAnswers = {};
+        let currentQuestionIndex = 0;
+        
+        // ==================== SURVEY SYSTEM ====================
+        const SURVEYS = {
+            "monday_history_survey": {
+                title: "📜 Monday History Survey",
+                description: "Test your knowledge of Malawian and African history",
+                day: "monday",
+                questions: [
+                    {
+                        id: 1,
+                        question: "1. In which year did Malawi gain independence from Britain?",
+                        options: ["A) 1960", "B) 1964", "C) 1970", "D) 1958"],
+                        correctAnswer: 1,
+                        value: 400
+                    },
+                    {
+                        id: 2,
+                        question: "2. Who was the first President of Malawi?",
+                        options: ["A) Bingu wa Mutharika", "B) Kamuzu Banda", "C) Bakili Muluzi", "D) Joyce Banda"],
+                        correctAnswer: 1,
+                        value: 400
+                    },
+                    {
+                        id: 3,
+                        question: "3. What was the original name of Malawi before independence?",
+                        options: ["A) Rhodesia", "B) Nyasaland", "C) Tanganyika", "D) Northern Rhodesia"],
+                        correctAnswer: 1,
+                        value: 400
+                    },
+                    {
+                        id: 4,
+                        question: "4. Which famous anti-colonial uprising occurred in Malawi in 1915?",
+                        options: ["A) Maji Maji Rebellion", "B) Chilembwe Uprising", "C) Mau Mau Rebellion", "D) Bambatha Rebellion"],
+                        correctAnswer: 1,
+                        value: 400
+                    },
+                    {
+                        id: 5,
+                        question: "5. Which lake forms most of Malawi's eastern border?",
+                        options: ["A) Lake Tanganyika", "B) Lake Victoria", "C) Lake Malawi", "D) Lake Kariba"],
+                        correctAnswer: 2,
+                        value: 400
+                    }
+                ],
+                totalValue: 2000
+            }
+        };
+        
+        const WEEKLY_TASKS = [
+            { day: "Monday", task: "📝 History Survey", description: "Complete 5 history questions (MWK 400 each correct answer)", profitValue: 0, type: "survey" },
+            { day: "Tuesday", task: "🎬 TikTok Reels", description: "Create and post 1 educational TikTok reel about Malawi history", profitValue: 500, type: "profit" },
+            { day: "Wednesday", task: "📸 Instagram Reels", description: "Create and post 1 Instagram reel about African culture", profitValue: 500, type: "profit" },
+            { day: "Thursday", task: "🎥 YouTube Reels", description: "Create and post 1 YouTube short about digital skills", profitValue: 700, type: "profit" },
+            { day: "Friday", task: "✍️ Blog Writing", description: "Write a 300-word blog post about technology in Malawi", profitValue: 800, type: "profit" },
+            { day: "Saturday", task: "😄 Meme Writing", description: "Create 3 educational memes about African history", profitValue: 400, type: "profit" },
+            { day: "Sunday", task: "📊 Agent Ranking", description: "Rank your weekly performance and submit report", profitValue: 600, type: "profit" }
+        ];
+        
+        const WHATSAPP_SUPPORT_NUMBER = "+265993915361";
+        
+        // ==================== INITIALIZATION ====================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Digital Skills Malawi Platform Loading...');
+            initApp();
+        });
+        
+        function initApp() {
+            // Initialize localStorage
+            if (!localStorage.getItem('students')) localStorage.setItem('students', JSON.stringify([]));
+            if (!localStorage.getItem('withdrawals')) localStorage.setItem('withdrawals', JSON.stringify([]));
+            if (!localStorage.getItem('surveyResponses')) localStorage.setItem('surveyResponses', JSON.stringify([]));
+            if (!localStorage.getItem('paymentSentTimes')) localStorage.setItem('paymentSentTimes', JSON.stringify({}));
+            
+            updateHomeStats();
+            showPaymentDetails('airtel');
+        }
+        
+        // ==================== TAB MANAGEMENT ====================
+        function showTab(tabName) {
+            console.log('Showing tab:', tabName);
+            
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            
+            // Remove active from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected tab
+            const tabElement = document.getElementById(tabName + '-tab');
+            if (tabElement) {
+                tabElement.classList.remove('hidden');
+            }
+            
+            // Activate tab button
+            document.querySelectorAll('.tab').forEach(tab => {
+                if (tab.textContent.includes(getTabEmoji(tabName))) {
+                    tab.classList.add('active');
+                }
+            });
+            
+            // Load content for specific tabs
+            if (tabName === 'home') {
+                updateHomeStats();
+            } else if (tabName === 'pay') {
+                updatePaymentRefs();
+            } else if (tabName === 'dashboard' && currentUser) {
+                loadDashboard();
+            } else if (tabName === 'survey') {
+                loadAvailableSurveys();
+            } else if (tabName === 'admin' && isAdmin) {
+                loadAdminDashboard();
+            }
+        }
+        
+        function getTabEmoji(tabName) {
+            const emojis = {
+                'home': '🏠',
+                'register': '📝',
+                'pay': '💰',
+                'login': '🎓',
+                'dashboard': '📊',
+                'survey': '📝',
+                'admin': '👑'
+            };
+            return emojis[tabName] || '';
+        }
+        
+        // ==================== UTILITY FUNCTIONS ====================
+        function showNotification(message, type) {
+            const notificationArea = document.getElementById('notification-area');
+            const notification = document.createElement('div');
+            notification.className = `message ${type}`;
+            notification.textContent = message;
+            notificationArea.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentNode === notificationArea) {
+                    notification.remove();
+                }
+            }, 3000);
+        }
+        
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            if (field.type === 'password') {
+                field.type = 'text';
+                field.parentElement.querySelector('.password-toggle').textContent = '🙈';
+            } else {
+                field.type = 'password';
+                field.parentElement.querySelector('.password-toggle').textContent = '👁️';
+            }
+        }
+        
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification('✅ Copied to clipboard!', 'success');
+            }).catch(() => {
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showNotification('✅ Copied to clipboard!', 'success');
+            });
+        }
+        
+        // ==================== WHATSAPP FUNCTIONS ====================
+        function contactWhatsAppSupport() {
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            let studentId = "Not registered yet";
+            let studentName = "New User";
+            
+            if (students.length > 0) {
+                const lastStudent = students[students.length - 1];
+                studentId = lastStudent.id;
+                studentName = lastStudent.name;
+            }
+            
+            const message = `Hello, I need assistance with Digital Skills Malawi.\n\nStudent ID: ${studentId}\nName: ${studentName}\n\nPlease help me with:`;
+            openWhatsApp(message);
+        }
+        
+        function sendPaymentProof() {
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            
+            if (students.length === 0) {
+                showNotification('Please register first', 'error');
+                showTab('register');
+                return;
+            }
+            
+            const lastStudent = students[students.length - 1];
+            const studentId = lastStudent.id;
+            const studentName = lastStudent.name;
+            
+            const message = `PAYMENT PROOF - Digital Skills Malawi\n\nStudent ID: ${studentId}\nName: ${studentName}\nAmount: MWK 8,000\n\nI have made payment. Please activate my account within 2 minutes.\n\nThank you!`;
+            openWhatsApp(message);
+            
+            // Record payment sent time
+            const paymentTimes = JSON.parse(localStorage.getItem('paymentSentTimes')) || {};
+            paymentTimes[studentId] = new Date().toISOString();
+            localStorage.setItem('paymentSentTimes', JSON.stringify(paymentTimes));
+            
+            showNotification('✅ Payment proof sent! Admin will activate within 2 minutes.', 'success');
+        }
+        
+        function openWhatsApp(message) {
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/${WHATSAPP_SUPPORT_NUMBER}?text=${encodedMessage}`, '_blank');
+        }
+        
+        // ==================== REGISTRATION & LOGIN ====================
+        function registerStudent() {
+            const fullName = document.getElementById('full-name').value;
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const password = document.getElementById('password').value;
+            
+            if (!fullName || !username || !email || !phone || !password) {
+                showNotification('Please fill all fields', 'error');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showNotification('Password must be at least 6 characters', 'error');
+                return;
+            }
+            
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            
+            if (students.find(s => s.username === username)) {
+                showNotification('Username already taken', 'error');
+                return;
+            }
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const referrerId = urlParams.get('ref');
+            
+            const studentId = 'DSM' + (1000 + students.length);
+            
+            const newStudent = {
+                id: studentId,
+                name: fullName,
+                username: username,
+                email: email,
+                phone: phone,
+                password: btoa(password),
+                status: 'pending',
+                paymentStatus: 'unpaid',
+                paymentAmount: 0,
+                paymentDate: null,
+                accountBalance: 0,
+                profitBalance: 0,
+                referralLink: window.location.href.split('?')[0] + '?ref=' + studentId,
+                referredBy: referrerId,
+                referrals: [],
+                tasksCompleted: {},
+                mondaySurveysCompleted: {},
+                weeklyTasksCompleted: {},
+                registered: new Date().toLocaleString(),
+                activated: null
+            };
+            
+            students.push(newStudent);
+            localStorage.setItem('students', JSON.stringify(students));
+            
+            showNotification(`✅ Registration successful! Student ID: ${studentId}`, 'success');
+            
+            // Clear form
+            document.getElementById('full-name').value = '';
+            document.getElementById('username').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('phone').value = '';
+            document.getElementById('password').value = '';
+            
+            setTimeout(() => showTab('pay'), 1000);
+        }
+        
+        function loginStudent() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            
+            if (!username || !password) {
+                showNotification('Please enter username and password', 'error');
+                return;
+            }
+            
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            const student = students.find(s => s.username === username || s.id === username);
+            
+            if (!student) {
+                showNotification('User not found', 'error');
+                return;
+            }
+            
+            if (atob(student.password) !== password) {
+                showNotification('Wrong password', 'error');
+                return;
+            }
+            
+            if (student.status !== 'active') {
+                showNotification('Account not activated. Please make payment and send proof to WhatsApp.', 'info');
+                showTab('pay');
+                return;
+            }
+            
+            currentUser = { ...student };
+            delete currentUser.password;
+            
+            document.getElementById('login-username').value = '';
+            document.getElementById('login-password').value = '';
+            
+            showTab('dashboard');
+            showNotification(`🎉 Welcome ${student.name}!`, 'success');
+        }
+        
+        function logout() {
+            currentUser = null;
+            showTab('home');
+            showNotification('Logged out', 'info');
+        }
+        
+        // ==================== DASHBOARD ====================
+        function loadDashboard() {
+            if (!currentUser) return;
+            
+            const today = new Date();
+            const dayOfWeek = today.getDay();
+            const dayName = getDayName(dayOfWeek);
+            
+            const totalWithdrawable = currentUser.accountBalance;
+            const mondaySurveysCompleted = currentUser.mondaySurveysCompleted ? Object.keys(currentUser.mondaySurveysCompleted).length : 0;
+            
+            // Load weekly tasks
+            const weeklyTasksHTML = loadWeeklyTasks();
+            
+            let html = `
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h2>Welcome, ${currentUser.name}!</h2>
+                            <p>Student ID: <span class="student-id-display">${currentUser.id}</span></p>
+                            <p>Today: <span class="day-label ${dayName.toLowerCase()}">${dayName}</span></p>
+                        </div>
+                        <button class="btn btn-danger" onclick="logout()">Logout</button>
+                    </div>
+                </div>
+                
+                <!-- Total Balance -->
+                <div class="total-balance-card">
+                    <h3>💰 WITHDRAWABLE BALANCE</h3>
+                    <div class="total-balance-amount">MWK ${totalWithdrawable}</div>
+                    <p>Account Balance (History Surveys + Referrals)</p>
+                    <button class="btn btn-success" onclick="requestWithdrawal()" style="margin-top: 10px; width: 100%;" ${totalWithdrawable < 6000 ? 'disabled' : ''}>
+                        💸 REQUEST WITHDRAWAL (Min: MWK 6,000)
+                    </button>
+                    ${totalWithdrawable < 6000 ? 
+                        `<p style="margin-top: 5px; font-size: 12px;">Need MWK ${6000 - totalWithdrawable} more</p>` : ''}
+                </div>
+                
+                <!-- Three Balances -->
+                <div class="balances-section">
+                    <div class="balance-card account-balance">
+                        <div class="balance-label">💳 ACCOUNT BALANCE</div>
+                        <div class="balance-amount">MWK ${currentUser.accountBalance}</div>
+                        <div class="balance-description">Monday Surveys + Referrals<br><strong>WITHDRAWABLE</strong></div>
+                    </div>
+                    
+                    <div class="balance-card profit-balance">
+                        <div class="balance-label">📈 PROFIT BALANCE</div>
+                        <div class="balance-amount">MWK ${currentUser.profitBalance}</div>
+                        <div class="balance-description">Weekly tasks<br><strong>NON-WITHDRAWABLE</strong></div>
+                    </div>
+                    
+                    <div class="balance-card" style="background: linear-gradient(135deg, #9C27B0, #7B1FA2); color: white;">
+                        <div class="balance-label">📜 MONDAY SURVEYS</div>
+                        <div class="balance-amount">${mondaySurveysCompleted}</div>
+                        <div class="balance-description">Completed<br><strong>MWK 400 per correct</strong></div>
+                    </div>
+                </div>
+                
+                <!-- Weekly Tasks Section -->
+                ${weeklyTasksHTML}
+                
+                <!-- Quick Actions -->
+                <div class="card">
+                    <h3>🚀 Quick Actions</h3>
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 15px;">
+                        <button class="btn btn-success" onclick="showTab('survey')">
+                            📝 Take History Survey
+                        </button>
+                        <button class="btn btn-primary" onclick="showTab('pay')">
+                            💰 Make Payment
+                        </button>
+                        <button class="btn" style="background: #25D366; color: white;" onclick="contactWhatsAppSupport()">
+                            💬 WhatsApp Help
+                        </button>
+                        <button class="btn btn-info" onclick="copyToClipboard('${currentUser.referralLink}')">
+                            📋 Copy Referral Link
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Referral Link -->
+                <div class="referral-link-box">
+                    <h3>👥 Your Referral Link</h3>
+                    <p>Earn MWK 3,000 for each friend who joins!</p>
+                    <div class="referral-link" onclick="copyToClipboard('${currentUser.referralLink}')">
+                        ${currentUser.referralLink}
+                    </div>
+                    <div class="share-buttons">
+                        <button class="btn btn-primary" onclick="copyToClipboard('${currentUser.referralLink}')">
+                            📋 Copy Link
+                        </button>
+                        <button class="btn" style="background: #25D366; color: white;" onclick="openWhatsApp('Join Digital Skills Malawi! Earn MWK 3,000 per referral + MWK 2,000 Monday history surveys. Use my link: ${currentUser.referralLink}')">
+                            💬 Share on WhatsApp
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- WhatsApp Support -->
+                <div class="whatsapp-help-box">
+                    <h3>💬 Need Help?</h3>
+                    <p>Contact our WhatsApp support for assistance:</p>
+                    <div style="margin: 15px 0;">
+                        <div style="font-size: 18px; font-weight: bold;">+265 993 915 361</div>
+                        <p style="font-size: 14px;">Available Monday-Saturday, 8:00 AM - 8:00 PM</p>
+                    </div>
+                    <button class="btn" style="background: white; color: #25D366;" onclick="contactWhatsAppSupport()">
+                        💬 Chat on WhatsApp
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('dashboard-content').innerHTML = html;
+        }
+        
+        function getDayName(dayIndex) {
+            const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            return days[dayIndex];
+        }
+        
+        function loadWeeklyTasks() {
+            if (!currentUser) return '';
+            
+            const today = new Date();
+            const dayOfWeek = today.getDay();
+            const todayName = getDayName(dayOfWeek);
+            
+            let html = `
+                <div class="card">
+                    <h2>📅 Weekly Tasks Schedule</h2>
+                    <p>Complete daily tasks to earn Profit Balance (Non-withdrawable)</p>
+                    
+                    <div class="task-list">
+            `;
+            
+            WEEKLY_TASKS.forEach(task => {
+                const isToday = task.day === todayName;
+                const completedToday = currentUser.weeklyTasksCompleted && 
+                                      currentUser.weeklyTasksCompleted[task.day] === today.toDateString();
+                const canComplete = isToday && !completedToday;
+                
+                html += `
+                    <div class="task-item" style="border-left-color: ${isToday ? '#4CAF50' : '#ddd'};">
+                        <div class="task-day">
+                            ${task.day} ${isToday ? ' (TODAY)' : ''}
+                            <span class="task-status ${completedToday ? 'completed' : canComplete ? 'pending' : 'locked'}">
+                                ${completedToday ? '✓ Completed' : canComplete ? 'Available' : 'Locked'}
+                            </span>
+                        </div>
+                        <div style="font-weight: bold; margin: 5px 0;">${task.task}</div>
+                        <div>${task.description}</div>
+                        <div style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+                            <span class="task-reward">Reward: MWK ${task.profitValue}</span>
+                            ${canComplete ? `
+                                <button class="btn btn-small btn-success" onclick="completeTask('${task.day}')">
+                                    Complete Task
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `
+                    </div>
+                    <div style="margin-top: 15px; padding: 10px; background: #e3f2fd; border-radius: 5px;">
+                        <p><strong>Note:</strong> Profit Balance earnings are for learning purposes and are non-withdrawable. Account Balance (from surveys and referrals) is withdrawable.</p>
+                    </div>
+                </div>
+            `;
+            
+            return html;
+        }
+        
+        function completeTask(dayName) {
+            if (!currentUser) return;
+            
+            const task = WEEKLY_TASKS.find(t => t.day === dayName);
+            if (!task) return;
+            
+            const today = new Date();
+            const todayDate = today.toDateString();
+            
+            // Check if already completed today
+            if (currentUser.weeklyTasksCompleted && currentUser.weeklyTasksCompleted[dayName] === todayDate) {
+                showNotification(`Already completed ${dayName}'s task today!`, 'info');
+                return;
+            }
+            
+            // Add to profit balance
+            currentUser.profitBalance += task.profitValue;
+            
+            // Mark as completed
+            if (!currentUser.weeklyTasksCompleted) currentUser.weeklyTasksCompleted = {};
+            currentUser.weeklyTasksCompleted[dayName] = todayDate;
+            
+            // Update student data
+            updateStudentData();
+            
+            showNotification(`✅ ${task.task} completed! MWK ${task.profitValue} added to Profit Balance`, 'success');
+            
+            // Reload dashboard
+            loadDashboard();
+        }
+        
+        // ==================== PAYMENT FUNCTIONS ====================
+        function showPaymentDetails(method) {
+            if (method === 'airtel') {
+                document.getElementById('airtel-details').classList.remove('hidden');
+                document.getElementById('tnmp-details').classList.add('hidden');
+            } else {
+                document.getElementById('airtel-details').classList.add('hidden');
+                document.getElementById('tnmp-details').classList.remove('hidden');
+            }
+        }
+        
+        function updatePaymentRefs() {
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            if (students.length > 0) {
+                const lastStudent = students[students.length - 1];
+                document.getElementById('airtel-ref').textContent = lastStudent.id;
+                document.getElementById('tnmp-ref').textContent = lastStudent.id;
+            }
+        }
+        
+        // ==================== WITHDRAWAL ====================
+        function requestWithdrawal() {
+            if (!currentUser || currentUser.accountBalance < 6000) {
+                showNotification('Minimum withdrawal: MWK 6,000', 'error');
+                return;
+            }
+            
+            const withdrawals = JSON.parse(localStorage.getItem('withdrawals')) || [];
+            const withdrawal = {
+                id: 'WD' + Date.now(),
+                studentId: currentUser.id,
+                studentName: currentUser.name,
+                amount: currentUser.accountBalance,
+                status: 'pending',
+                date: new Date().toLocaleString()
+            };
+            
+            withdrawals.push(withdrawal);
+            localStorage.setItem('withdrawals', JSON.stringify(withdrawals));
+            
+            currentUser.accountBalance = 0;
+            updateStudentData();
+            
+            showNotification(`✅ Withdrawal requested for MWK ${withdrawal.amount}. Admin will process within 24 hours.`, 'success');
+            loadDashboard();
+        }
+        
+        // ==================== STUDENT DATA MANAGEMENT ====================
+        function updateStudentData() {
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            const index = students.findIndex(s => s.id === currentUser.id);
+            if (index !== -1) {
+                const originalPassword = students[index].password;
+                students[index] = { ...currentUser, password: originalPassword };
+                localStorage.setItem('students', JSON.stringify(students));
+            }
+        }
+        
+        // ==================== SURVEY FUNCTIONS ====================
+        function loadAvailableSurveys() {
+            if (!currentUser) {
+                showNotification('Please login first', 'error');
+                showTab('login');
+                return;
+            }
+            
+            const today = new Date();
+            const dayOfWeek = today.getDay();
+            const isMonday = dayOfWeek === 1;
+            const todayDate = today.toDateString();
+            
+            let html = '<div class="card">';
+            
+            if (!isMonday) {
+                const daysUntilMonday = dayOfWeek === 0 ? 1 : (8 - dayOfWeek) % 7;
+                const nextMonday = new Date(today);
+                nextMonday.setDate(today.getDate() + daysUntilMonday);
+                const nextMondayStr = nextMonday.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+                
+                html += `
+                    <h2>📜 Monday History Surveys</h2>
+                    <div class="message info">
+                        <h3>History Surveys Available on Mondays Only</h3>
+                        <p>Today is <strong>${getDayName(dayOfWeek)}</strong>. History surveys are only available on Mondays.</p>
+                        <p>Next survey opportunity: <strong>${nextMondayStr}</strong></p>
+                        <p><strong>Earn MWK 400 for each correct answer!</strong></p>
+                        <p><strong>Warning:</strong> MWK 400 will be deducted for each wrong answer</p>
+                    </div>
+                    <div style="margin-top: 20px; text-align: center;">
+                        <span class="day-label monday">MONDAY ONLY</span>
+                        <span class="day-label ${getDayName(dayOfWeek).toLowerCase()}">TODAY</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="showTab('dashboard')" style="margin-top: 20px; width: 100%;">
+                        ← Back to Dashboard
+                    </button>
+                `;
+            } else {
+                const surveyKey = 'monday_history_survey';
+                const survey = SURVEYS[surveyKey];
+                const completedToday = currentUser.mondaySurveysCompleted && 
+                                     currentUser.mondaySurveysCompleted[surveyKey] === todayDate;
+                
+                if (completedToday) {
+                    const responses = JSON.parse(localStorage.getItem('surveyResponses')) || [];
+                    const lastSurvey = responses.filter(r => r.studentId === currentUser.id && r.day === 'Monday').pop();
+                    
+                    html += `
+                        <h2>📜 Monday History Survey</h2>
+                        <div class="message success">
+                            <h3>✅ Survey Already Completed!</h3>
+                            <p>You have already completed today's history survey.</p>
+                            ${lastSurvey ? `<p>Your score: <strong>${lastSurvey.score}/${survey.questions.length} correct</strong></p>
+                            <p>You earned: <strong>MWK ${lastSurvey.earned}</strong></p>` : ''}
+                            <p>Next survey available: <strong>Next Monday</strong></p>
+                        </div>
+                        <div style="margin-top: 20px; text-align: center;">
+                            <span class="day-label monday">MONDAY</span>
+                            <span style="background: #4CAF50; color: white; padding: 5px 10px; border-radius: 5px;">
+                                ${lastSurvey ? `MWK ${lastSurvey.earned} Earned` : 'Completed'}
+                            </span>
+                        </div>
+                        <button class="btn btn-primary" onclick="showTab('dashboard')" style="margin-top: 20px; width: 100%;">
+                            ← Back to Dashboard
+                        </button>
+                    `;
+                } else {
+                    html += `
+                        <h2>📜 Monday History Survey</h2>
+                        <p>Complete this history survey to earn up to <strong>MWK ${survey.totalValue}</strong>!</p>
+                        <p>Available only on <span class="day-label monday">MONDAYS</span></p>
+                        
+                        <div class="task-item">
+                            <h3>${survey.title}</h3>
+                            <p>${survey.description}</p>
+                            <div style="margin: 15px 0; padding: 10px; background: #fff3cd; border-radius: 5px; border-left: 4px solid #ff9800;">
+                                <strong>⚠️ Important Rules:</strong>
+                                <ul style="margin-top: 5px; padding-left: 20px;">
+                                    <li>Earn <strong>MWK 400</strong> for each correct answer</li>
+                                    <li>Lose <strong>MWK 400</strong> for each wrong answer</li>
+                                    <li>Maximum possible: <strong>MWK 2,000</strong></li>
+                                    <li>Minimum possible: <strong>MWK 0</strong></li>
+                                </ul>
+                            </div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                                <div>
+                                    <span style="background: #4CAF50; color: white; padding: 5px 10px; border-radius: 5px;">
+                                        ${survey.questions.length} history questions
+                                    </span>
+                                    <span style="color: #4CAF50; font-weight: bold; margin-left: 10px;">
+                                        Max Reward: MWK ${survey.totalValue}
+                                    </span>
+                                </div>
+                                <button class="btn btn-success" onclick="startSurvey('${surveyKey}')">
+                                    Start History Survey
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            html += '</div>';
+            document.getElementById('survey-content').innerHTML = html;
+        }
+        
+        function startSurvey(surveyKey) {
+            currentSurvey = SURVEYS[surveyKey];
+            currentAnswers = {};
+            currentQuestionIndex = 0;
+            loadSurveyQuestion();
+        }
+        
+        function loadSurveyQuestion() {
+            if (!currentSurvey) return;
+            
+            const question = currentSurvey.questions[currentQuestionIndex];
+            const progress = ((currentQuestionIndex + 1) / currentSurvey.questions.length) * 100;
+            
+            let html = `
+                <div class="card">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h2>${currentSurvey.title}</h2>
+                        <button class="btn btn-danger btn-small" onclick="cancelSurvey()">
+                            ❌ Cancel
+                        </button>
+                    </div>
+                    
+                    <div class="survey-progress">
+                        <div class="progress-bar" style="width: ${progress}%"></div>
+                    </div>
+                    
+                    <p>Question ${currentQuestionIndex + 1} of ${currentSurvey.questions.length}</p>
+                    
+                    <div class="survey-question">
+                        <h3>${question.question}</h3>
+                        <p><small>Value: <strong>MWK ${question.value}</strong> (Correct: +MWK ${question.value}, Wrong: -MWK ${question.value})</small></p>
+                        
+                        <div id="options-container">
+                            ${question.options.map((option, index) => `
+                                <div class="option" onclick="selectOption(${index})" id="option-${index}">
+                                    ${option}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+                        ${currentQuestionIndex > 0 ? `
+                            <button class="btn" onclick="previousQuestion()">
+                                ← Previous
+                            </button>
+                        ` : '<div></div>'}
+                        
+                        ${currentQuestionIndex < currentSurvey.questions.length - 1 ? `
+                            <button class="btn btn-primary" onclick="nextQuestion()" id="next-btn" ${currentAnswers[currentQuestionIndex] === undefined ? 'disabled' : ''}>
+                                Next →
+                            </button>
+                        ` : `
+                            <button class="btn btn-success" onclick="submitSurvey()" ${currentAnswers[currentQuestionIndex] === undefined ? 'disabled' : ''}>
+                                ✅ Submit Survey
+                            </button>
+                        `}
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('survey-content').innerHTML = html;
+            
+            if (currentAnswers[currentQuestionIndex] !== undefined) {
+                document.getElementById(`option-${currentAnswers[currentQuestionIndex]}`).classList.add('selected');
+            }
+        }
+        
+        function selectOption(index) {
+            const options = document.querySelectorAll('#options-container .option');
+            options.forEach(opt => opt.classList.remove('selected'));
+            
+            document.getElementById(`option-${index}`).classList.add('selected');
+            currentAnswers[currentQuestionIndex] = index;
+            
+            const nextBtn = document.getElementById('next-btn');
+            if (nextBtn) nextBtn.disabled = false;
+        }
+        
+        function nextQuestion() {
+            if (currentQuestionIndex < currentSurvey.questions.length - 1) {
+                currentQuestionIndex++;
+                loadSurveyQuestion();
+            }
+        }
+        
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadSurveyQuestion();
+            }
+        }
+        
+        function cancelSurvey() {
+            if (confirm('Are you sure you want to cancel? Your progress will be lost.')) {
+                currentSurvey = null;
+                currentAnswers = {};
+                currentQuestionIndex = 0;
+                loadAvailableSurveys();
+            }
+        }
+        
+        function submitSurvey() {
+            if (!currentUser || !currentSurvey) return;
+            
+            const today = new Date();
+            if (today.getDay() !== 1) {
+                showNotification('History surveys are only available on Mondays!', 'error');
+                loadAvailableSurveys();
+                return;
+            }
+            
+            let correctAnswers = 0;
+            let earned = 0;
+            
+            currentSurvey.questions.forEach((question, index) => {
+                const userAnswer = currentAnswers[index];
+                if (userAnswer !== undefined) {
+                    if (userAnswer === question.correctAnswer) {
+                        correctAnswers++;
+                        earned += question.value;
+                    } else {
+                        earned -= question.value;
+                    }
+                }
+            });
+            
+            earned = Math.max(0, earned);
+            
+            const surveyKey = Object.keys(SURVEYS).find(key => SURVEYS[key] === currentSurvey);
+            const surveyResponse = {
+                studentId: currentUser.id,
+                studentName: currentUser.name,
+                surveyId: surveyKey,
+                surveyTitle: currentSurvey.title,
+                answers: currentAnswers,
+                score: correctAnswers,
+                totalQuestions: currentSurvey.questions.length,
+                earned: earned,
+                date: new Date().toLocaleString(),
+                day: 'Monday'
+            };
+            
+            const responses = JSON.parse(localStorage.getItem('surveyResponses')) || [];
+            responses.push(surveyResponse);
+            localStorage.setItem('surveyResponses', JSON.stringify(responses));
+            
+            currentUser.accountBalance += earned;
+            
+            if (!currentUser.mondaySurveysCompleted) currentUser.mondaySurveysCompleted = {};
+            currentUser.mondaySurveysCompleted[surveyKey] = today.toDateString();
+            
+            updateStudentData();
+            showSurveyResults(correctAnswers, earned, currentSurvey.questions.length);
+        }
+        
+        function showSurveyResults(correct, earned, total) {
+            let html = `
+                <div class="card">
+                    <h2>📜 Monday History Survey Results</h2>
+                    <div class="message ${correct === total ? 'success' : correct >= total/2 ? 'info' : 'error'}">
+                        <h3>Survey Completed!</h3>
+                        <p>Your score: <strong>${correct}/${total} correct</strong></p>
+                        <p>You earned: <strong>MWK ${earned}</strong></p>
+                        ${correct === total ? 
+                            '<p>🎉 Perfect score! Excellent historical knowledge!</p>' : 
+                            correct >= total/2 ? 
+                            '<p>Good job! Keep learning more history!</p>' :
+                            '<p>Keep studying! History knowledge improves with time!</p>'
+                        }
+                    </div>
+                    
+                    <div style="margin: 20px 0; text-align: center;">
+                        <div style="display: inline-block; background: #4CAF50; color: white; padding: 10px 20px; border-radius: 10px;">
+                            <div style="font-size: 24px; font-weight: bold;">MWK ${earned}</div>
+                            <div>Added to Account Balance</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                        <h4>📊 Score Breakdown:</h4>
+                        <p>• Correct answers: <strong>${correct} × MWK 400 = MWK ${correct * 400}</strong></p>
+                        <p>• Wrong answers: <strong>${total - correct} × -MWK 400 = MWK -${(total - correct) * 400}</strong></p>
+                        <p>• <strong>Total: MWK ${earned}</strong></p>
+                    </div>
+                    
+                    <button class="btn btn-primary" onclick="showTab('dashboard')" style="width: 100%;">
+                        ← Back to Dashboard
+                    </button>
+                </div>
+            `;
+            
+            document.getElementById('survey-content').innerHTML = html;
+        }
+        
+        // ==================== ADMIN FUNCTIONS ====================
+        function adminLogin() {
+            const password = document.getElementById('admin-pass').value;
+            
+            if (atob('YWRtaW4xMjM=') === password) {
+                isAdmin = true;
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                document.getElementById('admin-pass').value = '';
+                loadAdminDashboard();
+                showNotification('👑 Welcome Admin!', 'success');
+            } else {
+                showNotification('Wrong password', 'error');
+            }
+        }
+        
+        function loadAdminDashboard() {
+            let html = `
+                <div class="card">
+                    <h2>👑 Admin Panel</h2>
+                    <div style="background: #4CAF50; color: white; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                        <strong>⏰ ACTIVATION PROMISE: 2 MINUTES</strong>
+                        <p>Activate new payments within 2 minutes of receiving proof</p>
+                    </div>
+                    <div class="shortcuts">
+                        <button class="btn btn-warning" onclick="showAdminSection('activate')">✅ Activate (2-min promise)</button>
+                        <button class="btn btn-success" onclick="showAdminSection('withdraw')">💸 Withdrawals</button>
+                        <button class="btn btn-info" onclick="showAdminSection('stats')">📊 Stats</button>
+                        <button class="btn btn-info" onclick="showAdminSection('surveys')">📝 Survey Results</button>
+                    </div>
+                </div>
+                
+                <div id="activate-section">
+                    <div class="card">
+                        <h3>✅ Activate Student Accounts</h3>
+                        <p><strong>2-MINUTE ACTIVATION PROMISE:</strong> Activate these students within 2 minutes of their payment</p>
+                        <div id="pending-activations"></div>
+                    </div>
+                </div>
+                
+                <div id="withdraw-section" class="hidden">
+                    <div class="card">
+                        <h3>💸 Withdrawal Requests</h3>
+                        <div id="withdrawal-requests"></div>
+                    </div>
+                </div>
+                
+                <div id="stats-section" class="hidden">
+                    <div class="card">
+                        <h3>📊 Platform Statistics</h3>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 15px 0;">
+                            <div style="background: #4CAF50; color: white; padding: 15px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 24px; font-weight: bold;" id="stats-total">0</div>
+                                <div>Total Students</div>
+                            </div>
+                            <div style="background: #2196F3; color: white; padding: 15px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 24px; font-weight: bold;" id="stats-active">0</div>
+                                <div>Active</div>
+                            </div>
+                            <div style="background: #9C27B0; color: white; padding: 15px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 24px; font-weight: bold;" id="stats-surveys">0</div>
+                                <div>Monday Surveys</div>
+                            </div>
+                            <div style="background: #ff9800; color: white; padding: 15px; border-radius: 8px; text-align: center;">
+                                <div style="font-size: 24px; font-weight: bold;" id="stats-commissions">MWK 0</div>
+                                <div>Total Earnings</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="surveys-section" class="hidden">
+                    <div class="card">
+                        <h3>📝 Monday Survey Results</h3>
+                        <div id="survey-results"></div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('admin-dashboard').innerHTML = html;
+            showAdminSection('activate');
+        }
+        
+        function showAdminSection(section) {
+            ['activate', 'withdraw', 'stats', 'surveys'].forEach(sec => {
+                const el = document.getElementById(sec + '-section');
+                if (el) el.classList.add('hidden');
+            });
+            
+            const target = document.getElementById(section + '-section');
+            if (target) target.classList.remove('hidden');
+            
+            if (section === 'activate') loadPendingActivations();
+            if (section === 'withdraw') loadWithdrawalRequests();
+            if (section === 'stats') loadStatistics();
+            if (section === 'surveys') loadSurveyResults();
+        }
+        
+        function loadPendingActivations() {
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            const pending = students.filter(s => s.status === 'pending');
+            const list = document.getElementById('pending-activations');
+            
+            if (pending.length === 0) {
+                list.innerHTML = '<div class="message success">🎉 All accounts activated! Great job with 2-minute activation promise!</div>';
+                return;
+            }
+            
+            let html = `
+                <div class="activation-promise-box" style="margin-bottom: 15px;">
+                    <h3>⏰ 2-MINUTE ACTIVATION PROMISE</h3>
+                    <p>Activate these students within 2 minutes of their payment!</p>
+                </div>
+            `;
+            
+            pending.forEach(student => {
+                const paymentTimes = JSON.parse(localStorage.getItem('paymentSentTimes')) || {};
+                const paymentTime = paymentTimes[student.id];
+                let timeAgo = '';
+                
+                if (paymentTime) {
+                    const sentTime = new Date(paymentTime);
+                    const now = new Date();
+                    const diffMs = now - sentTime;
+                    const diffMins = Math.floor(diffMs / 60000);
+                    
+                    if (diffMins < 2) {
+                        timeAgo = `<span style="color: #4CAF50; font-weight: bold;">⏰ ${diffMins} minute(s) ago - ACTIVATE NOW!</span>`;
+                    } else {
+                        timeAgo = `<span style="color: #f44336; font-weight: bold;">⚠️ ${diffMins} minutes ago - OVERDUE!</span>`;
+                    }
+                }
+                
+                html += `
+                    <div class="task-item">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong>${student.name}</strong><br>
+                                <span class="student-id-display">${student.id}</span><br>
+                                Phone: ${student.phone}<br>
+                                ${timeAgo}
+                            </div>
+                            <div>
+                                <button class="btn btn-success" onclick="activateAccount('${student.id}')">
+                                    ✅ Activate Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            list.innerHTML = html;
+        }
+        
+        function activateAccount(studentId) {
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            const student = students.find(s => s.id === studentId);
+            
+            if (!student) return;
+            
+            student.status = 'active';
+            student.paymentStatus = 'paid';
+            student.paymentAmount = 8000;
+            student.paymentDate = new Date().toLocaleString();
+            student.activated = new Date().toLocaleString();
+            
+            if (student.referredBy) {
+                const referrer = students.find(s => s.id === student.referredBy || s.username === student.referredBy);
+                if (referrer) {
+                    referrer.accountBalance += 3000;
+                    if (!referrer.referrals) referrer.referrals = [];
+                    referrer.referrals.push(studentId);
+                }
+            }
+            
+            localStorage.setItem('students', JSON.stringify(students));
+            
+            const paymentTimes = JSON.parse(localStorage.getItem('paymentSentTimes')) || {};
+            delete paymentTimes[studentId];
+            localStorage.setItem('paymentSentTimes', JSON.stringify(paymentTimes));
+            
+            showNotification(`✅ ${student.name} activated! Student can now login.`, 'success');
+            loadPendingActivations();
+        }
+        
+        function loadWithdrawalRequests() {
+            const withdrawals = JSON.parse(localStorage.getItem('withdrawals')) || [];
+            const pending = withdrawals.filter(w => w.status === 'pending');
+            const list = document.getElementById('withdrawal-requests');
+            
+            if (pending.length === 0) {
+                list.innerHTML = '<div class="message info">No withdrawal requests</div>';
+                return;
+            }
+            
+            let html = '';
+            pending.forEach(wd => {
+                html += `
+                    <div class="task-item">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong>${wd.studentName}</strong><br>
+                                Student ID: ${wd.studentId}<br>
+                                Amount: <strong style="color: #4CAF50;">MWK ${wd.amount}</strong>
+                            </div>
+                            <button class="btn btn-success" onclick="approveWithdrawal('${wd.id}')">
+                                ✅ Pay
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            list.innerHTML = html;
+        }
+        
+        function approveWithdrawal(withdrawalId) {
+            const withdrawals = JSON.parse(localStorage.getItem('withdrawals')) || [];
+            const withdrawal = withdrawals.find(w => w.id === withdrawalId);
+            
+            if (withdrawal) {
+                withdrawal.status = 'paid';
+                localStorage.setItem('withdrawals', JSON.stringify(withdrawals));
+                showNotification(`✅ Payment processed for MWK ${withdrawal.amount}`, 'success');
+                loadWithdrawalRequests();
+            }
+        }
+        
+        function loadStatistics() {
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            const total = students.length;
+            const active = students.filter(s => s.status === 'active').length;
+            
+            const responses = JSON.parse(localStorage.getItem('surveyResponses')) || [];
+            const mondaySurveys = responses.filter(r => r.day === 'Monday');
+            const surveyEarnings = mondaySurveys.reduce((sum, r) => sum + (r.earned || 0), 0);
+            const referralEarnings = students.reduce((sum, s) => sum + (s.accountBalance || 0), 0);
+            
+            document.getElementById('stats-total').textContent = total;
+            document.getElementById('stats-active').textContent = active;
+            document.getElementById('stats-surveys').textContent = mondaySurveys.length;
+            document.getElementById('stats-commissions').textContent = `MWK ${surveyEarnings + referralEarnings}`;
+        }
+        
+        function loadSurveyResults() {
+            const responses = JSON.parse(localStorage.getItem('surveyResponses')) || [];
+            const mondayResponses = responses.filter(r => r.day === 'Monday');
+            const list = document.getElementById('survey-results');
+            
+            if (mondayResponses.length === 0) {
+                list.innerHTML = '<div class="message info">No Monday survey responses yet</div>';
+                return;
+            }
+            
+            let html = `
+                <h3>📜 Monday History Survey Results</h3>
+                <p>Total Monday surveys completed: <strong>${mondayResponses.length}</strong></p>
+            `;
+            
+            const byWeek = {};
+            mondayResponses.forEach(r => {
+                const date = new Date(r.date);
+                const weekKey = `${date.getFullYear()}-W${Math.ceil(date.getDate()/7)}`;
+                if (!byWeek[weekKey]) {
+                    byWeek[weekKey] = { count: 0, totalEarned: 0, totalQuestions: 0, correctAnswers: 0 };
+                }
+                byWeek[weekKey].count++;
+                byWeek[weekKey].totalEarned += r.earned || 0;
+                byWeek[weekKey].totalQuestions += r.totalQuestions || 0;
+                byWeek[weekKey].correctAnswers += r.score || 0;
+            });
+            
+            Object.entries(byWeek).forEach(([week, data]) => {
+                const averageScore = data.totalQuestions > 0 ? (data.correctAnswers / data.totalQuestions * 100).toFixed(1) : 0;
+                html += `
+                    <div class="task-item" style="margin-bottom: 15px;">
+                        <strong>Week: ${week}</strong>
+                        <div style="margin-top: 10px;">
+                            <div>Surveys: <strong>${data.count}</strong></div>
+                            <div>Total Earned: <strong style="color: #4CAF50;">MWK ${data.totalEarned}</strong></div>
+                            <div>Average Score: <strong>${averageScore}%</strong></div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '<h3 style="margin-top: 20px;">Recent Monday Surveys</h3>';
+            const recent = mondayResponses.slice(-10).reverse();
+            
+            recent.forEach(r => {
+                const percentage = r.totalQuestions > 0 ? (r.score / r.totalQuestions * 100).toFixed(1) : 0;
+                html += `
+                    <div class="task-item">
+                        <strong>${r.studentName}</strong> (${r.studentId})
+                        <p>Score: ${r.score}/${r.totalQuestions} (${percentage}%)</p>
+                        <p>Earned: <strong style="color: #4CAF50;">MWK ${r.earned}</strong></p>
+                        <small>${r.date}</small>
+                    </div>
+                `;
+            });
+            
+            list.innerHTML = html;
+        }
+        
+        function updateHomeStats() {
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            const totalStudents = students.length;
+            const totalBalance = students.reduce((sum, s) => sum + s.accountBalance, 0);
+            
+            document.getElementById('total-students').textContent = totalStudents;
+            document.getElementById('total-earned').textContent = `MWK ${totalBalance}`;
+        }
+    </script>
+</body>
+</html>
